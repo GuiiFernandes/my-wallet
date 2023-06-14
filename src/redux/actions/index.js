@@ -19,9 +19,7 @@ export const currenciesFailure = () => ({ type: CURRENCIES_FAILURE });
 export const fetchCurrencies = () => async (dispatch) => {
   dispatch(requestCurrencies());
   try {
-    const data = await getCurrencies();
-    const currencies = Object.keys(data)
-      .filter((currency) => currency !== 'USDT');
+    const currencies = await getCurrencies();
     dispatch(currenciesSuccess(currencies));
   } catch (error) {
     console.error(error);

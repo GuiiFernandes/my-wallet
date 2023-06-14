@@ -10,6 +10,7 @@ const INITIAL_STATE = {
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
+  console.log(action.currencies);
   switch (action.type) {
   case REQUEST_CURRENCIES:
     return {
@@ -19,7 +20,8 @@ const wallet = (state = INITIAL_STATE, action) => {
   case CURRENCIES_SUCCESS:
     return {
       ...state,
-      currencies: action.currencies,
+      currencies: Object.keys(action.currencies)
+        .filter((currency) => currency !== 'USDT'),
       isLoading: false,
     };
   case CURRENCIES_FAILURE:
