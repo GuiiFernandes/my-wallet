@@ -4,7 +4,7 @@ export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const CURRENCIES_SUCCESS = 'CURRENCIES_SUCCESS';
 export const CURRENCIES_FAILURE = 'CURRENCIES_FAILURE';
-export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const MODIFY_EXPENSES = 'MODIFY_EXPENSES';
 
 export const saveEmail = (email) => ({ type: SAVE_EMAIL, email });
 
@@ -28,4 +28,4 @@ export const fetchCurrencies = () => async (dispatch) => {
   }
 };
 
-export const addExpense = (expense) => ({ type: ADD_EXPENSE, expense });
+export const modifyExpenses = (expenses) => ({ type: MODIFY_EXPENSES, expenses });

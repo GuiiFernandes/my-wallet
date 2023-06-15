@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrencies, addExpense } from '../redux/actions';
+
+import { fetchCurrencies, modifyExpenses } from '../redux/actions';
 import fetchAPI from '../services/fetchAPI';
 
 const alimentacao = 'Alimentação';
@@ -29,14 +30,15 @@ class WalletForm extends Component {
 
   handleSubmit = async () => {
     const { state } = this;
-    const { dispatchAddExpense, expenses, currencies } = this.props;
+    const { dispatchModifyExpenses, expenses, currencies } = this.props;
     const quotes = await fetchAPI();
-    const expense = {
-      ...state,
-      id: expenses.length,
-      exchangeRates: quotes,
-    };
-    dispatchAddExpense(expense);
+    const newExpenses = [...expenses,
+      {
+        ...state,
+        id: expenses.length ? expenses[expenses.length - 1].id + 1 : 0,
+        exchangeRates: quotes,
+      }];
+    dispatchModifyExpenses(newExpenses);
     this.setState({
       value: '',
       currency: currencies[0],
@@ -137,7 +139,7 @@ WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
   dispatchFetchCurrencies: PropTypes.func.isRequired,
-  dispatchAddExpense: PropTypes.func.isRequired,
+  dispatchModifyExpenses: PropTypes.func.isRequired,
 
 };
 
@@ -148,7 +150,7 @@ const mapStateToProps = ({ wallet: { currencies, expenses } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchFetchCurrencies: () => dispatch(fetchCurrencies()),
-  dispatchAddExpense: (expense) => dispatch(addExpense(expense)),
+  dispatchModifyExpenses: (expenses) => dispatch(modifyExpenses(expenses)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);

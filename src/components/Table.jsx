@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { MdDeleteForever } from 'react-icons/md';
 
 import { tableHeaders } from '../helpers';
+import { modifyExpenses } from '../redux/actions';
 
 class Table extends Component {
   calculateAndTotal = (value, ask = 1) => {
     const total = Number(ask) * Number(value);
     return total.toFixed(2);
+  };
+
+  handleDelete = (id) => {
+    const { expenses, dispatchModifyExpenses } = this.props;
+    const newExpenses = expenses.filter((expense) => expense.id !== id);
+    dispatchModifyExpenses(newExpenses);
   };
 
   render() {
@@ -33,6 +41,15 @@ class Table extends Component {
                   {this.calculateAndTotal(value, exchangeRates[currency].ask)}
                 </td>
                 <td>Real</td>
+                <td>
+                  <button
+                    type="button"
+                    data-testid="delete-btn"
+                    onClick={ () => this.handleDelete(id) }
+                  >
+                    <MdDeleteForever />
+                  </button>
+                </td>
               </tr>
             ))}
         </tbody>
@@ -43,10 +60,15 @@ class Table extends Component {
 
 Table.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
+  dispatchModifyExpenses: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ wallet: { expenses } }) => ({
   expenses,
 });
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchModifyExpenses: (expenses) => dispatch(modifyExpenses(expenses)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
