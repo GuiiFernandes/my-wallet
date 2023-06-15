@@ -19,15 +19,13 @@ class Header extends Component {
     return (
       <header>
         <h1>My Wallet</h1>
-        <div>
-          <p>
-            <span data-testid="total-field">
-              { this.sumTotal() }
-            </span>
-            {' '}
-            <span data-testid="header-currency-field">BRL</span>
-          </p>
-        </div>
+        <p>
+          <span data-testid="total-field">
+            { this.sumTotal() }
+          </span>
+          {' '}
+          <span data-testid="header-currency-field">BRL</span>
+        </p>
         <div>
           <p data-testid="email-field">{email}</p>
         </div>
