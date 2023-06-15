@@ -6,6 +6,7 @@ import { act } from 'react-dom/test-utils';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import mockData from './helpers/mockData';
+import { emailsFailTest } from './helpers/arraysTest';
 
 describe('Teste da página de Login', () => {
   afterEach(() => jest.clearAllMocks());
@@ -25,8 +26,6 @@ describe('Teste da página de Login', () => {
   });
 
   it('O botão de entrar é habilitado APENAS quando um email e senha válidos são preenchidos;', () => {
-    const emailsFailTest = ['email', 'email@', 'email@com', 'email@email@com', 'email@.', 'email.email.com', 'email@.com', '.email@email.com', '@email.com', 'email.com@'];
-
     renderWithRouterAndRedux(<App />);
     const emailInput = screen.getByPlaceholderText(/e-mail/i);
     const passwordInput = screen.getByPlaceholderText(/senha/i);
