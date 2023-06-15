@@ -1,5 +1,5 @@
 import { REQUEST_CURRENCIES, CURRENCIES_SUCCESS,
-  CURRENCIES_FAILURE, MODIFY_EXPENSES } from '../actions';
+  CURRENCIES_FAILURE, MODIFY_EXPENSES, EDIT_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -34,6 +34,13 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: action.expenses,
+      editor: false,
+    };
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      editor: true,
+      idToEdit: action.id,
     };
   default:
     return state;

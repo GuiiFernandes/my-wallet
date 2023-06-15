@@ -9,50 +9,102 @@ const alimentacao = 'Alimentação';
 const dinheiro = 'Dinheiro';
 
 class WalletForm extends Component {
-  state = {
-    value: '',
-    currency: '',
-    method: dinheiro,
-    tag: alimentacao,
-    description: '',
-  };
+  state = { updated: true,
+    form: {
+      value: '',
+      currency: '',
+      method: dinheiro,
+      tag: alimentacao,
+      description: '',
+    } };
 
   async componentDidMount() {
     const { dispatchFetchCurrencies } = this.props;
     await dispatchFetchCurrencies();
     const { currencies } = this.props;
-    this.setState((prevState) => ({ ...prevState, currency: currencies[0] }));
+    this.setState((prevState) => ({
+      ...prevState,
+      form: { ...prevState.form, currency: currencies[0] },
+    }));
+  }
+
+  componentDidUpdate() {
+    const { updated } = this.state;
+    const { editor, expenses, idToEdit } = this.props;
+    if (editor && updated) {
+      const { value, currency, method, tag, description } = expenses
+        .find(({ id }) => id === idToEdit);
+      this.setState(() => ({
+        updated: false,
+        form: {
+          value,
+          currency,
+          method,
+          tag,
+          description,
+        },
+      }));
+    }
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
+    this.setState(({ updated, form }) => ({
+      updated,
+      form: { ...form, [name]: value },
+    }));
   };
 
-  handleSubmit = async () => {
-    const { state } = this;
-    const { dispatchModifyExpenses, expenses, currencies } = this.props;
+  sendToGlobalState = (newExpenses) => {
+    const { dispatchModifyExpenses, currencies } = this.props;
+    dispatchModifyExpenses(newExpenses);
+    this.setState({ updated: true,
+      form: {
+        value: '',
+        currency: currencies[0],
+        method: dinheiro,
+        tag: alimentacao,
+        description: '',
+      } });
+  };
+
+  addNewExpense = async (form) => {
+    const { expenses } = this.props;
     const quotes = await fetchAPI();
     const newExpenses = [...expenses,
       {
-        ...state,
+        ...form,
         id: expenses.length ? expenses[expenses.length - 1].id + 1 : 0,
         exchangeRates: quotes,
       }];
-    dispatchModifyExpenses(newExpenses);
-    this.setState({
-      value: '',
-      currency: currencies[0],
-      method: dinheiro,
-      tag: alimentacao,
-      description: '',
+    this.sendToGlobalState(newExpenses);
+  };
+
+  saveEditExpense = (form) => {
+    const { idToEdit, expenses } = this.props;
+    const newExpenses = expenses.map((expense) => {
+      if (expense.id === idToEdit) {
+        return { ...expense, ...form };
+      }
+      return expense;
     });
+    this.sendToGlobalState(newExpenses);
+  };
+
+  handleSubmit = async () => {
+    const { form } = this.state;
+    const { editor } = this.props;
+    if (editor) {
+      this.saveEditExpense(form);
+    } else {
+      await this.addNewExpense(form);
+    }
   };
 
   render() {
-    const { description, value, currency, method, tag } = this.state;
+    const { form: { description, value, currency, method, tag } } = this.state;
     const methods = [dinheiro, 'Cartão de crédito', 'Cartão de débito'];
     const tags = [alimentacao, 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
 
     return (
       <form
@@ -129,7 +181,7 @@ class WalletForm extends Component {
             ))}
           </select>
         </label>
-        <button>Adicionar Despesa</button>
+        <button>{`${editor ? 'Editar' : 'Adicionar'} Despesa`}</button>
       </form>
     );
   }
@@ -138,14 +190,18 @@ class WalletForm extends Component {
 WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
+  editor: PropTypes.bool.isRequired,
+  idToEdit: PropTypes.number.isRequired,
   dispatchFetchCurrencies: PropTypes.func.isRequired,
   dispatchModifyExpenses: PropTypes.func.isRequired,
 
 };
 
-const mapStateToProps = ({ wallet: { currencies, expenses } }) => ({
+const mapStateToProps = ({ wallet: { editor, idToEdit, currencies, expenses } }) => ({
   currencies,
   expenses,
+  editor,
+  idToEdit,
 });
 
 const mapDispatchToProps = (dispatch) => ({

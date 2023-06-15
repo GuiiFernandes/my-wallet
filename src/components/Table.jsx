@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MdDeleteForever } from 'react-icons/md';
+import { MdEdit, MdDeleteForever } from 'react-icons/md';
 
 import { tableHeaders } from '../helpers';
-import { modifyExpenses } from '../redux/actions';
+import { editExpense, modifyExpenses } from '../redux/actions';
 
 class Table extends Component {
   calculateAndTotal = (value, ask = 1) => {
@@ -13,13 +13,13 @@ class Table extends Component {
   };
 
   handleDelete = (id) => {
-    const { expenses, dispatchModifyExpenses } = this.props;
+    const { expenses, dispatch } = this.props;
     const newExpenses = expenses.filter((expense) => expense.id !== id);
-    dispatchModifyExpenses(newExpenses);
+    dispatch(modifyExpenses(newExpenses));
   };
 
   render() {
-    const { expenses } = this.props;
+    const { expenses, dispatch } = this.props;
     return (
       <table>
         <thead>
@@ -44,6 +44,13 @@ class Table extends Component {
                 <td>
                   <button
                     type="button"
+                    data-testid="edit-btn"
+                    onClick={ () => dispatch(editExpense(id)) }
+                  >
+                    <MdEdit />
+                  </button>
+                  <button
+                    type="button"
                     data-testid="delete-btn"
                     onClick={ () => this.handleDelete(id) }
                   >
@@ -60,15 +67,11 @@ class Table extends Component {
 
 Table.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
-  dispatchModifyExpenses: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ wallet: { expenses } }) => ({
   expenses,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  dispatchModifyExpenses: (expenses) => dispatch(modifyExpenses(expenses)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Table);
+export default connect(mapStateToProps)(Table);
