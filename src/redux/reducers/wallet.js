@@ -1,4 +1,5 @@
-import { REQUEST_CURRENCIES, CURRENCIES_SUCCESS, CURRENCIES_FAILURE } from '../actions';
+import { REQUEST_CURRENCIES, CURRENCIES_SUCCESS,
+  CURRENCIES_FAILURE, ADD_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -10,7 +11,6 @@ const INITIAL_STATE = {
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
-  console.log(action.currencies);
   switch (action.type) {
   case REQUEST_CURRENCIES:
     return {
@@ -29,6 +29,11 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       isAPIFailure: true,
       isLoading: false,
+    };
+  case ADD_EXPENSE:
+    return {
+      ...state,
+      expenses: [...state.expenses, action.expense],
     };
   default:
     return state;

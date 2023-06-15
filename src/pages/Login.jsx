@@ -23,12 +23,13 @@ class Login extends React.Component {
 
   handleSubmit = () => {
     const { email } = this.state;
-    const { dispatchSaveEmail, history } = this.props;
-    dispatchSaveEmail(email);
+    const { history, dispatch } = this.props;
+    dispatch(saveEmail(email));
     history.push('/carteira');
   };
 
   render() {
+    const { email, password } = this.state;
     return (
       <section>
         <h1>My Wallet</h1>
@@ -44,6 +45,7 @@ class Login extends React.Component {
             name="email"
             id="email"
             placeholder="E-mail"
+            value={ email }
             onChange={ this.handleChange }
             required
           />
@@ -53,6 +55,7 @@ class Login extends React.Component {
             name="password"
             id="password"
             placeholder="Senha"
+            value={ password }
             onChange={ this.handleChange }
             required
           />
@@ -66,16 +69,10 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  dispatchSaveEmail: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-const mapStateToProps = ({ user: { email } }) => ({ globalEmail: email });
-
-const mapDispatchToProps = (dispatch) => ({
-  dispatchSaveEmail: (email) => dispatch(saveEmail(email)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect()(Login);
