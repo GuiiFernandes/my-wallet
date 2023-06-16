@@ -1,14 +1,14 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { act } from 'react-dom/test-utils';
+
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import mockData from './helpers/mockData';
 import { emailsFailTest } from './helpers/arraysTest';
 
-describe('Teste da página de Login', () => {
+describe('Teste da página de Login:', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('A página login é renderizada no inicio da aplicação com o botão de entrar desabilitado;', () => {
@@ -40,7 +40,6 @@ describe('Teste da página de Login', () => {
       userEvent.type(passwordInput, '12345');
       expect(btnLoginEl).toBeDisabled();
       userEvent.type(emailInput, 'email@email.com');
-      // userEvent.clear(passwordInput);
       userEvent.type(passwordInput, '123456');
     });
     expect(btnLoginEl).toBeEnabled();
@@ -52,6 +51,7 @@ describe('Teste da página de Login', () => {
     });
 
     const { history } = renderWithRouterAndRedux(<App />);
+
     const emailInput = screen.getByPlaceholderText(/e-mail/i);
     const passwordInput = screen.getByPlaceholderText(/senha/i);
     const btnLoginEl = screen.getByRole('button', { name: /entrar/i });
