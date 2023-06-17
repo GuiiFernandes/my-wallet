@@ -6,23 +6,11 @@ import App from '../App';
 import WalletForm from '../components/WalletForm';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import mockData from './helpers/mockData';
-import { elementsType, inputsName } from './helpers/arraysTest';
+import { elementsType, inputsName, createInitState } from './helpers/auxiliaries';
 import Table from '../components/Table';
 import { tableHeaders } from '../helpers';
 
-const initialState = {
-  user: {
-    email: 'email@email.com',
-  },
-  wallet: {
-    currencies: [],
-    expenses: [],
-    editor: false,
-    idToEdit: 0,
-    isLoading: true,
-    isAPIFailure: false,
-  },
-};
+const initialState = createInitState();
 
 describe('Teste da renderização dos componentes:', () => {
   afterEach(() => jest.clearAllMocks());
@@ -93,5 +81,18 @@ describe('Teste da renderização dos componentes:', () => {
       expect(ths[index]).toHaveTextContent(header);
     });
     expect(tableEl.lastChild).toHaveTextContent('');
+  });
+
+  it('Se houver um erro na requisição da API, o erro é exibido na tela;', async () => {
+    jest.spyOn(global, 'fetch').mockRejectedValue(new Error('API is down'));
+    const log = jest.spyOn(console, 'error');
+
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'], initialState });
+
+    const errorEl = await screen.findByRole('heading', { level: 2 });
+
+    expect(errorEl).toBeVisible();
+    expect(errorEl).toHaveTextContent('Erro ao carregar moedas!');
+    expect(log).toHaveBeenCalledWith(new Error('API is down'));
   });
 });

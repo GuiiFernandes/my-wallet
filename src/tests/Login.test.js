@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import mockData from './helpers/mockData';
-import { emailsFailTest } from './helpers/arraysTest';
+import { emailsFailTest } from './helpers/auxiliaries';
 
 describe('Teste da página de Login:', () => {
   afterEach(() => jest.clearAllMocks());

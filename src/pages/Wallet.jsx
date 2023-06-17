@@ -8,7 +8,17 @@ import WalletForm from '../components/WalletForm';
 
 class Wallet extends React.Component {
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, isAPIFailure } = this.props;
+
+    if (isAPIFailure) {
+      return (
+        <section>
+          <h2>Erro ao carregar moedas!</h2>
+          <p>Atualize a página ou tente novamente mais tarde.</p>
+        </section>
+      );
+    }
+
     return (
       <section>
         <div>
@@ -27,10 +37,12 @@ class Wallet extends React.Component {
 
 Wallet.propTypes = {
   isLoading: PropTypes.bool.isRequired,
+  isAPIFailure: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ wallet: { isLoading } }) => ({
+const mapStateToProps = ({ wallet: { isLoading, isAPIFailure } }) => ({
   isLoading,
+  isAPIFailure,
 });
 
 export default connect(mapStateToProps)(Wallet);
