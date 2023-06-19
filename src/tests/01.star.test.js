@@ -5,44 +5,43 @@ import { act } from 'react-dom/test-utils';
 
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
+import rootReducer from '../redux/reducers';
 import mockData from './helpers/mockData';
-import { emailsFailTest } from './helpers/auxiliaries';
 
-describe('Teste da página de Login:', () => {
+const emailValid = 'email@email.com';
+
+describe('[Startest] Teste da página de Login:', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('A página login é renderizada no inicio da aplicação com o botão de entrar desabilitado;', () => {
-    renderWithRouterAndRedux(<App />);
-    const titleEl = screen.getByRole('heading', { level: 1, name: /my wallet/i });
-    const emailInput = screen.getByPlaceholderText(/e-mail/i);
-    const passwordInput = screen.getByPlaceholderText(/senha/i);
+    const { history } = renderWithRouterAndRedux(<App />);
+    const emailInput = screen.getByTestId(/email-input/i);
+    const passwordInput = screen.getByTestId(/password-input/i);
     const btnLoginEl = screen.getByRole('button', { name: /entrar/i });
 
-    expect(titleEl).toBeVisible();
+    expect(history.location.pathname).toBe('/');
     expect(emailInput).toBeVisible();
+    expect(emailInput).toHaveValue('');
     expect(passwordInput).toBeVisible();
+    expect(passwordInput).toHaveValue('');
     expect(btnLoginEl).toBeVisible();
     expect(btnLoginEl).toBeDisabled();
   });
 
   it('O botão de entrar é habilitado APENAS quando um email e senha válidos são preenchidos;', () => {
     renderWithRouterAndRedux(<App />);
-    const emailInput = screen.getByPlaceholderText(/e-mail/i);
-    const passwordInput = screen.getByPlaceholderText(/senha/i);
+    const emailInput = screen.getByTestId(/email-input/i);
+    const passwordInput = screen.getByTestId(/password-input/i);
     const btnLoginEl = screen.getByRole('button', { name: /entrar/i });
 
     expect(btnLoginEl).toBeDisabled();
     act(() => {
       userEvent.type(passwordInput, '123456');
+      userEvent.type(emailInput, 'emailInvalid');
       expect(btnLoginEl).toBeDisabled();
-      emailsFailTest.forEach((email) => {
-        userEvent.clear(emailInput);
-        userEvent.type(emailInput, email);
-        expect(btnLoginEl).toBeDisabled();
-      });
       userEvent.clear(passwordInput);
       userEvent.clear(emailInput);
-      userEvent.type(emailInput, 'email@email.com');
+      userEvent.type(emailInput, emailValid);
       userEvent.type(passwordInput, '12345');
       expect(btnLoginEl).toBeDisabled();
       userEvent.clear(passwordInput);
@@ -52,32 +51,42 @@ describe('Teste da página de Login:', () => {
   });
 
   it('Ao clicar no botão de entrar, a rota muda para a página de carteira e o e-mail está na tela;', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(mockData),
     });
 
-    const { history } = renderWithRouterAndRedux(<App />);
+    const { history, store } = renderWithRouterAndRedux(<App />);
+    jest.spyOn(store, 'dispatch');
 
-    expect(history.location.pathname).toBe('/');
-
-    const emailInput = screen.getByPlaceholderText(/e-mail/i);
-    const passwordInput = screen.getByPlaceholderText(/senha/i);
+    const emailInput = screen.getByTestId(/email-input/i);
+    const passwordInput = screen.getByTestId(/password-input/i);
     const btnLoginEl = screen.getByRole('button', { name: /entrar/i });
 
     await act(async () => {
-      userEvent.type(emailInput, 'email@email.com');
+      userEvent.clear(emailInput);
+      userEvent.clear(passwordInput);
+      userEvent.type(emailInput, emailValid);
       userEvent.type(passwordInput, '123456');
+
+      expect(emailInput).toHaveValue(emailValid);
+      expect(passwordInput).toHaveValue('123456');
       userEvent.click(btnLoginEl);
     });
+
+    expect(store.dispatch).toHaveBeenCalled();
 
     const headerEl = await screen.findByRole('banner');
     const soonsHeaderEl = headerEl.children;
     const { pathname } = history.location;
     const emailEl = screen.getByTestId('email-field');
 
+    expect(global.fetch).toBeCalledTimes(1);
     expect(headerEl).toBeVisible();
     expect(soonsHeaderEl).toHaveLength(3);
     expect(pathname).toBe('/carteira');
     expect(emailEl).toBeVisible();
+    expect(store.getState().user.email).toBe(emailValid);
+    screen.debug();
   });
 });

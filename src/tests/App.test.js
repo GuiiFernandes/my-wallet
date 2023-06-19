@@ -38,14 +38,14 @@ const checkReturnExpenses = (dataExpenses, expenses) => {
 };
 
 describe('Teste de funcionamento da carteira:', () => {
+  beforeEach(() => jest.spyOn(global, 'fetch').mockResolvedValue({
+    json: jest.fn().mockResolvedValue(mockData),
+  }));
+
   afterEach(() => jest.clearAllMocks());
 
   it('Lança uma despesa e soma o total corretamente;', async () => {
     const initialState = createInitState();
-
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockData),
-    });
 
     renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'], initialState });
 
@@ -69,10 +69,6 @@ describe('Teste de funcionamento da carteira:', () => {
 
   it('Edita uma despesa já lançada;', async () => {
     const initialState = createInitState(false);
-
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockData),
-    });
 
     renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'], initialState });
 
@@ -107,10 +103,6 @@ describe('Teste de funcionamento da carteira:', () => {
 
   it('Deleta uma despesa já lançada;', async () => {
     const initialState = createInitState(false);
-
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockData),
-    });
 
     renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'], initialState });
 

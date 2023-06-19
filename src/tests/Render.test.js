@@ -13,13 +13,13 @@ import { tableHeaders } from '../helpers';
 const initialState = createInitState();
 
 describe('Teste da renderização dos componentes:', () => {
+  beforeEach(() => jest.spyOn(global, 'fetch').mockResolvedValue({
+    json: jest.fn().mockResolvedValue(mockData),
+  }));
+
   afterEach(() => jest.clearAllMocks());
 
   it('O Header tem uma tag header com 3 filhos, sendo um "h1", um "p" e uma "div", com os textos corretos;', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockData),
-    });
-
     renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'], initialState });
 
     await waitForElementToBeRemoved(() => screen.getByTestId(/loading/i));
@@ -43,10 +43,6 @@ describe('Teste da renderização dos componentes:', () => {
   });
 
   it('O formulário é renderizado corretamente na tela;', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockData),
-    });
-
     await act(async () => {
       renderWithRouterAndRedux(<WalletForm />, { initialEntries: ['/carteira'], initialState });
     });
@@ -63,10 +59,6 @@ describe('Teste da renderização dos componentes:', () => {
   });
 
   it('A tabela é renderizado corretamente na tela;', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockData),
-    });
-
     renderWithRouterAndRedux(<Table />, { initialEntries: ['/carteira'], initialState });
 
     const tableEl = screen.getByRole('table');

@@ -1,0 +1,8 @@
+.page {
+  background-color: var(--dark-gray);
+  color: var(--white);
+  display: flex;
+  font-size: 1.6rem;
+  justify-content: center;
+  min-height: 100vh;
+}

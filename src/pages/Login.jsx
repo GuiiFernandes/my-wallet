@@ -1,20 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import isEmail from 'validator/lib/isEmail';
 
 import { saveEmail } from '../redux/actions';
+import logo from '../image/logo.svg';
+import styles from './Login.module.css';
 
 class Login extends React.Component {
   state = {
     email: '',
     password: '',
-  };
-
-  validInput = () => {
-    const { email, password } = this.state;
-    const MIN_LENGTH = 6;
-    const emailRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
-    return emailRegex.test(email) && password.length >= MIN_LENGTH;
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -29,10 +25,14 @@ class Login extends React.Component {
   };
 
   render() {
+    const MIN_LENGTH = 6;
     const { email, password } = this.state;
     return (
-      <section>
-        <h1>My Wallet</h1>
+      <section className={ styles.login }>
+        <div className={ styles.titleContainer }>
+          <img src={ logo } alt="Logo" />
+          <h1>My Wallet</h1>
+        </div>
         <form
           onSubmit={ (e) => {
             e.preventDefault();
@@ -59,7 +59,7 @@ class Login extends React.Component {
             onChange={ this.handleChange }
             required
           />
-          <button disabled={ !this.validInput() }>
+          <button disabled={ !(isEmail(email) && password.length >= MIN_LENGTH) }>
             Entrar
           </button>
         </form>

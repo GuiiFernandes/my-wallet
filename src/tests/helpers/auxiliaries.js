@@ -3,7 +3,7 @@ import mockData from './mockData';
 const alimentacao = 'Alimentação';
 const cartaoDebito = 'Cartão de débito';
 
-export const emailsFailTest = ['email', 'email@', 'email@com', 'email@email@com', 'email@.', 'email.email.com', 'email@.com', '.email@email.com', '@email.com', 'email.com@'];
+export const emailsFailTest = ['email', 'email@', 'email@com', 'email@email@com', 'email@.', 'email.email.com', 'email@.com', '.email@email.com', '@email.com', 'email.com@', '@email@.', '@..'];
 
 export const elementsType = ['H1', 'P', 'DIV'];
 
