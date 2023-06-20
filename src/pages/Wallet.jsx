@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Table from '../components/Table';
 import WalletForm from '../components/WalletForm';
+import styles from './Wallet.module.css';
 
 class Wallet extends React.Component {
   render() {
@@ -20,8 +21,8 @@ class Wallet extends React.Component {
     }
 
     return (
-      <section>
-        <div>
+      <section className={ styles.background }>
+        <div className={ styles.header }>
           <Header />
           <WalletForm />
         </div>

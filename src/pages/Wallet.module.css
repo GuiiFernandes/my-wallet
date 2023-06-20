@@ -1,0 +1,67 @@
+.background {
+  align-items: center;
+  animation: openWallet 2s ease-in;
+  background: url('../images/background.png') var(--light-green);
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: absolute;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  animation: openHeader 4s ease-in;
+  background-color: var(--white);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 1200px;
+  padding-bottom: 30px;
+  position: relative;
+  width: 80%;
+}
+
+@keyframes openWallet {
+
+  0% {
+    border-bottom-right-radius: 40%;
+    border-top-right-radius: 40%;
+    left: 0;
+    width: 55%;
+  }
+
+  10% {
+    border-bottom-right-radius: 40%;
+    border-top-right-radius: 40%;
+    left: 0;
+    width: 55%;
+  }
+
+  100% {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+@keyframes openHeader {
+
+  0% {
+    top: -500px;
+  }
+
+  50% {
+    top: -400px;
+  }
+
+  100% {
+    top: 0;
+  }
+}

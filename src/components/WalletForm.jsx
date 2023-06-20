@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { fetchCurrencies, modifyExpenses } from '../redux/actions';
 import fetchAPI from '../services/fetchAPI';
+import styles from './WalletForm.module.css';
 
 const alimentacao = 'Alimentação';
 const dinheiro = 'Dinheiro';
@@ -69,12 +70,12 @@ class WalletForm extends Component {
 
   addNewExpense = async (form) => {
     const { expenses } = this.props;
-    const quotes = await fetchAPI();
+    const exchangeRates = await fetchAPI();
     const newExpenses = [...expenses,
       {
         ...form,
         id: expenses.length ? expenses[expenses.length - 1].id + 1 : 0,
-        exchangeRates: quotes,
+        exchangeRates,
       }];
     this.sendToGlobalState(newExpenses);
   };
@@ -108,6 +109,7 @@ class WalletForm extends Component {
 
     return (
       <form
+        className={ styles.form }
         onSubmit={ (e) => {
           e.preventDefault();
           this.handleSubmit();
@@ -127,6 +129,7 @@ class WalletForm extends Component {
         </label>
         <label htmlFor="tag">
           Categoria:
+          {' '}
           <select
             data-testid="tag-input"
             name="tag"
@@ -141,6 +144,7 @@ class WalletForm extends Component {
         </label>
         <label htmlFor="value">
           Valor:
+          {' '}
           <input
             type="number"
             name="value"

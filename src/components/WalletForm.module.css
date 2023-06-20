@@ -1,0 +1,9 @@
+.form {
+  background-color: var(--light-gray);
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+}
