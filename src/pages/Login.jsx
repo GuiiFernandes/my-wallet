@@ -20,10 +20,19 @@ class Login extends React.Component {
   };
 
   handleSubmit = () => {
+    const TIME_OUT = 700;
     const { email } = this.state;
     const { history, dispatch } = this.props;
     dispatch(saveEmail(email));
-    history.push('/carteira');
+    const title = document.getElementById('title');
+    const imgTitle = document.getElementById('imgTitle');
+    const form = document.querySelector('form');
+    form.classList.add(styles.goWalletForm);
+    title.classList.add(styles.goWallet);
+    imgTitle.classList.add(styles.goWallet);
+    setTimeout(() => {
+      history.push('/carteira');
+    }, TIME_OUT);
   };
 
   render() {
@@ -32,8 +41,8 @@ class Login extends React.Component {
     return (
       <section className={ styles.login }>
         <div className={ styles.titleContainer }>
-          <img className={ styles.logo } src={ logo } alt="Logo" />
-          <h1 className={ styles.title }>My Wallet</h1>
+          <img className={ styles.logo } id="title" src={ logo } alt="Logo" />
+          <h1 className={ styles.title } id="imgTitle">My Wallet</h1>
         </div>
         <form
           className={ styles.form }

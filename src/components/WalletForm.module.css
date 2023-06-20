@@ -1,9 +1,75 @@
 .form {
   background-color: var(--light-gray);
   display: grid;
-  gap: 15px;
-  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-template-columns: repeat(3, auto);
   justify-content: center;
-  padding: 20px;
+  padding: 10px 20px;
   width: 100%;
+}
+
+.inputForm {
+  background-color: transparent;
+  border: 2px solid var(--green);
+  border-radius: 45px;
+  color: var(--green);
+  font-size: 1.6rem;
+  margin-top: 5px;
+  max-width: 340px;
+  outline: none;
+  padding: 5px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.inputForm::-webkit-inner-spin-button {
+  appearance: none;
+}
+
+.inputForm::-webkit-outer-spin-button {
+  appearance: none;
+}
+
+.inputForm::placeholder {
+  color: var(--gray);
+}
+
+.inputForm:focus {
+  border: 2px solid var(--light-green);
+  box-shadow: 0 3px 15px rgba(171, 219, 37, 0.8);
+}
+
+.btnForm {
+  background-color: var(--green);
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  color: var(--light-green);
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: 700;
+  justify-self: center;
+  letter-spacing: 2.5px;
+  margin-top: 10px;
+  outline: none;
+  padding: 5px 20px;
+  text-transform: uppercase;
+  transition: all 0.3s ease 0s;
+  width: 90%;
+}
+
+.btnForm.btnForm {
+  transform: translateY(-1px);
+}
+
+.btnForm:disabled {
+  background-color: var(--dark-gray);
+  cursor: not-allowed;
+}
+
+.btnForm:enabled:hover {
+  background-color: var(--light-green);
+  box-shadow: 0 15px 20px rgba(0, 37, 0, 0.2);
+  color: var(--green);
+  transform: translateY(-7px);
 }

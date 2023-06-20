@@ -118,6 +118,7 @@ class WalletForm extends Component {
         <label htmlFor="description">
           Descrição:
           <input
+            className={ styles.inputForm }
             type="text"
             name="description"
             id="description"
@@ -132,6 +133,7 @@ class WalletForm extends Component {
           {' '}
           <select
             data-testid="tag-input"
+            className={ styles.inputForm }
             name="tag"
             value={ tag }
             onChange={ this.handleChange }
@@ -146,6 +148,7 @@ class WalletForm extends Component {
           Valor:
           {' '}
           <input
+            className={ styles.inputForm }
             type="number"
             name="value"
             min="0"
@@ -160,6 +163,7 @@ class WalletForm extends Component {
         <label htmlFor="currency">
           Moeda:
           <select
+            className={ styles.inputForm }
             data-testid="currency-input"
             name="currency"
             value={ currency }
@@ -174,6 +178,7 @@ class WalletForm extends Component {
         <label htmlFor="method">
           Método de pagamento:
           <select
+            className={ styles.inputForm }
             data-testid="method-input"
             name="method"
             value={ method }
@@ -185,7 +190,11 @@ class WalletForm extends Component {
             ))}
           </select>
         </label>
-        <button>{`${editor ? 'Editar' : 'Adicionar'} Despesa`}</button>
+        <button
+          className={ styles.btnForm }
+        >
+          {`${editor ? 'Editar' : 'Adicionar'} Despesa`}
+        </button>
       </form>
     );
   }

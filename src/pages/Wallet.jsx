@@ -27,7 +27,7 @@ class Wallet extends React.Component {
           <WalletForm />
         </div>
         { isLoading ? (
-          <section>
+          <section className={ styles.loading }>
             <h1 data-testid="loading">Carregando...</h1>
           </section>
         ) : (<Table />)}
