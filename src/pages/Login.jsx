@@ -9,6 +9,7 @@ import { GoogleAuthProvider, getAuth,
 
 import { saveUser } from '../redux/actions';
 import logo from '../images/logo.svg';
+import logoG from '../images/google-icon.svg';
 import styles from './Login.module.css';
 import { provider } from '../services/firebase';
 
@@ -91,6 +92,7 @@ class Login extends React.Component {
             className={ styles.btnLogin }
             // disabled={ !(isEmail(email) && password.length >= MIN_LENGTH) }
           >
+            <img src={ logoG } alt="Google" className={ styles.logoG } />
             Entrar
           </button>
         </form>
