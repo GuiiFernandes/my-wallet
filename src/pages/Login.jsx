@@ -1,29 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import isEmail from 'validator/lib/isEmail';
-import { MdAlternateEmail } from 'react-icons/md';
-import { RiLockPasswordLine } from 'react-icons/ri';
+// import isEmail from 'validator/lib/isEmail';
+// import { MdAlternateEmail } from 'react-icons/md';
+// import { RiLockPasswordLine } from 'react-icons/ri';
+import { GoogleAuthProvider, getAuth,
+  signInWithPopup } from 'firebase/auth';
 
-import { saveEmail } from '../redux/actions';
+import { saveUser } from '../redux/actions';
 import logo from '../images/logo.svg';
 import styles from './Login.module.css';
+import { provider } from '../services/firebase';
 
 class Login extends React.Component {
-  state = {
-    email: '',
-    password: '',
-  };
+  // state = {
+  //   email: '',
+  //   password: '',
+  // };
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
+  // handleChange = ({ target: { name, value } }) => {
+  //   this.setState({ [name]: value });
+  // };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
+    const auth = getAuth();
+    const result = await signInWithPopup(auth, provider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const { accessToken } = credential;
+    const { uid, displayName, email, photoURL, phoneNumber } = result.user;
     const TIME_OUT = 700;
-    const { email } = this.state;
+    // const { email } = this.state;
     const { history, dispatch } = this.props;
-    dispatch(saveEmail(email));
+    dispatch(saveUser({ uid, displayName, email, photoURL, phoneNumber, accessToken }));
     const title = document.getElementById('title');
     const imgTitle = document.getElementById('imgTitle');
     const form = document.querySelector('form');
@@ -36,8 +44,8 @@ class Login extends React.Component {
   };
 
   render() {
-    const MIN_LENGTH = 6;
-    const { email, password } = this.state;
+    // const MIN_LENGTH = 6;
+    // const { email, password } = this.state;
     return (
       <section className={ styles.login }>
         <div className={ styles.titleContainer }>
@@ -51,7 +59,7 @@ class Login extends React.Component {
             this.handleSubmit();
           } }
         >
-          <label htmlFor="email" className={ styles.labelInput }>
+          {/* <label htmlFor="email" className={ styles.labelInput }>
             <MdAlternateEmail size="4rem" />
             <input
               className={ styles.inputLogin }
@@ -78,10 +86,10 @@ class Login extends React.Component {
               onChange={ this.handleChange }
               required
             />
-          </label>
+          </label> */}
           <button
             className={ styles.btnLogin }
-            disabled={ !(isEmail(email) && password.length >= MIN_LENGTH) }
+            // disabled={ !(isEmail(email) && password.length >= MIN_LENGTH) }
           >
             Entrar
           </button>

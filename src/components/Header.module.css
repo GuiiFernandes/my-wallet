@@ -39,3 +39,9 @@
   display: flex;
   gap: 10px;
 }
+
+.img {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}

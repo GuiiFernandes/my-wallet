@@ -1,13 +1,13 @@
 import fetchAPI from '../../services/fetchAPI';
 
-export const SAVE_EMAIL = 'SAVE_EMAIL';
+export const SAVE_USER = 'SAVE_USER';
 export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const CURRENCIES_SUCCESS = 'CURRENCIES_SUCCESS';
 export const CURRENCIES_FAILURE = 'CURRENCIES_FAILURE';
 export const MODIFY_EXPENSES = 'MODIFY_EXPENSES';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
-export const saveEmail = (email) => ({ type: SAVE_EMAIL, email });
+export const saveUser = (user) => ({ type: SAVE_USER, user });
 
 export const requestCurrencies = () => ({ type: REQUEST_CURRENCIES });
 

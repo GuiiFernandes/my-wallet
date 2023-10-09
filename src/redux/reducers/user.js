@@ -1,19 +1,21 @@
-import { SAVE_EMAIL } from '../actions';
+import { SAVE_USER } from '../actions';
 
 const INITIAL_STATE = {
+  uid: '',
   email: '',
+  accessToken: '',
+  displayName: '',
+  phoneNumber: null,
+  photoURL: '',
 };
 
-const user = (state = INITIAL_STATE, action) => {
+const setUser = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case SAVE_EMAIL:
-    return {
-      ...state,
-      email: action.email,
-    };
+  case SAVE_USER:
+    return action.user;
   default:
     return state;
   }
 };
 
-export default user;
+export default setUser;

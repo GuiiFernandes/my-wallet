@@ -19,7 +19,8 @@ class Header extends Component {
   };
 
   render() {
-    const { email } = this.props;
+    const { user } = this.props;
+    const { photoURL, displayName } = user;
     return (
       <header className={ styles.header }>
         <div className={ styles.titleContainer }>
@@ -39,8 +40,12 @@ class Header extends Component {
           </p>
         </div>
         <div className={ styles.user }>
-          <CgProfile size="2.5rem" />
-          <p data-testid="email-field">{email}</p>
+          { photoURL ? (
+            <img src={ photoURL } alt="user" className={ styles.img } />
+          ) : (
+            <CgProfile size="40px" />
+          )}
+          <p data-testid="email-field">{displayName}</p>
         </div>
       </header>
     );
@@ -48,12 +53,12 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  email: PropTypes.string.isRequired,
+  user: PropTypes.instanceOf(Object).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
 };
 
-const mapStateToProps = ({ user: { email }, wallet: { expenses } }) => ({
-  email,
+const mapStateToProps = ({ user, wallet: { expenses } }) => ({
+  user,
   expenses,
 });
 
