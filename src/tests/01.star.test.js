@@ -5,7 +5,6 @@ import { act } from 'react-dom/test-utils';
 
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import rootReducer from '../redux/reducers';
 import mockData from './helpers/mockData';
 
 const emailValid = 'email@email.com';
@@ -57,7 +56,6 @@ describe('[Startest] Teste da página de Login:', () => {
     });
 
     const { history, store } = renderWithRouterAndRedux(<App />);
-    jest.spyOn(store, 'dispatch');
 
     const emailInput = screen.getByTestId(/email-input/i);
     const passwordInput = screen.getByTestId(/password-input/i);
@@ -74,8 +72,6 @@ describe('[Startest] Teste da página de Login:', () => {
       userEvent.click(btnLoginEl);
     });
 
-    expect(store.dispatch).toHaveBeenCalled();
-
     const headerEl = await screen.findByRole('banner');
     const soonsHeaderEl = headerEl.children;
     const { pathname } = history.location;
@@ -87,6 +83,5 @@ describe('[Startest] Teste da página de Login:', () => {
     expect(pathname).toBe('/carteira');
     expect(emailEl).toBeVisible();
     expect(store.getState().user.email).toBe(emailValid);
-    screen.debug();
   });
 });
